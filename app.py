@@ -30,14 +30,20 @@ class Patients(db.Model):
     last_name = db.Column(db.String(255))
     zip_code = db.Column(db.String(255), nullable=True)
     gender = db.Column(db.String(255), nullable=True)
+    dob = db.Column(db.String(255), nullable=True)
+    contact_mobile = db.Column(db.String(255), nullable=True)
+    height = db.Column(db.String(255), nullable=True)
 
     # this first function __init__ is to establish the class for python GUI
-    def __init__(self, mrn, first_name, last_name, zip_code, gender):
+    def __init__(self, mrn, first_name, last_name, zip_code, gender, dob, contact_mobile, height):
         self.mrn = mrn
         self.first_name = first_name
         self.last_name = last_name
         self.zip_code = zip_code
         self.gender = gender
+        self.dob = dob
+        self.contact_mobile = contact_mobile
+        self.gender = height
 
     # this second function is for the API endpoints to return JSON 
     def to_json(self):
@@ -47,7 +53,10 @@ class Patients(db.Model):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'zip_code': self.zip_code,
-            'gender': self.gender
+            'gender': self.gender,
+            'dob': self.dob,
+            'contact_mobile': self.contact_mobile,
+            'height': self.height
         }
 
 class Conditions_patient(db.Model):
@@ -94,7 +103,7 @@ class Medications_patient(db.Model):
     __tablename__ = 'patient_medications'
 
     id = db.Column(db.Integer, primary_key=True)
-    mrn = db.Column(db.String(255), db.ForeignKey('patients.mrn'))
+    patient_mrn = db.Column(db.String(255), db.ForeignKey('patients.mrn'))
     med_ndc = db.Column(db.String(255), db.ForeignKey('medications.med_ndc'))
 
     # this first function __init__ is to establish the class for python GUI
@@ -197,7 +206,7 @@ def delete(mrn): # note this function needs to match name in html form action
 def get_patient_details(mrn):
     patient_details = Patients.query.filter_by(mrn=mrn).first()
     patient_conditions = Conditions_patient.query.filter_by(mrn=mrn).all()
-    patient_medications = Medications_patient.query.filter_by(mrn=mrn).all()
+    patient_medications = Medications_patient.query.filter_by(patient_mrn=mrn).all()
     db_conditions = Conditions.query.all()
     db_medications = Medications.query.all()
     return render_template("patient_details.html", patient_details = patient_details, 
