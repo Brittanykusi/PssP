@@ -1,5 +1,5 @@
 # PssP
-Patient Self Service Portal - Admin View
+Patient Self Service Portal - Admin View (assignment)
 
 1. Create a new github repo called PssP in your github
 2. Copy the code (files, folders, subfolders) from Part6_CRUD in our HHA-504-2022 repo (https://github.com/hantswilliams/HHA-504-2022/tree/main/Part6_CRUD)
